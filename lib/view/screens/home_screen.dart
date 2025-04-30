@@ -145,6 +145,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemCount: filteredItems.length,
                           itemBuilder: (context, index) {
                             final item = filteredItems[index];
+                            print(
+                                'Image URL: ${item.imageUrl}'); // Debugging log
+
                             return Card(
                               margin: const EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 6),
@@ -161,6 +164,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                     width: 60,
                                     height: 60,
                                     fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      print(
+                                          'Failed to load image: ${item.imageUrl}');
+                                      return const Icon(Icons.broken_image,
+                                          size: 60);
+                                    },
                                   ),
                                 ),
                                 title: Text(
