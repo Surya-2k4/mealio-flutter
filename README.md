@@ -1,37 +1,3 @@
-
-# 🍽️ Mealio Flutter App
-
-Mealio is a cross-platform food recipe app developed using Flutter. It integrates Firebase for backend services and follows the MVVM (Model-View-ViewModel) architecture pattern to ensure a scalable and maintainable codebase.
-
----
-
-## 🚀 Features
-
-- 🔐 User Authentication (Firebase Auth)
-- 🗂️ Recipe Categories
-- 📷 Image Upload and Display (Firebase Storage)
-- 🔄 Realtime Sync with Firestore
-- 🔎 Search and Filter Functionality
-- 🌐 Web & Mobile Support (Responsive)
-- 📲 Firebase Push Notifications (Planned)
-
----
-
-
-
----
-
-## 📁 Project Structure
-
-```
-lib/
-├── models/         # Data models (e.g., User, Recipe)
-├── views/          # UI Screens and Widgets
-├── viewmodels/     # Business logic and data manipulation
-└── main.dart       # App entry point
-```
-
-
 # 🍽️ Mealio - A Flutter Recipe App
 
 Mealio is a Flutter-based recipe management application built using the MVVM architecture. It features user authentication, category-wise meal organization, and Firestore integration for storing meal data and images.
@@ -47,22 +13,7 @@ Mealio is a Flutter-based recipe management application built using the MVVM arc
 - MVVM Architecture using Provider
 - Responsive UI for Web and Mobile
 
----
 
-## 🧱 Project Structure
-
-```
-lib/
-├── models/         # Data models
-├── views/          # UI Screens
-├── viewmodels/     # Business logic, connects UI to models
-├── services/       # Firebase and other services
-├── widgets/        # Reusable UI components
-├── utils/          # Constants, helpers, etc.
-└── main.dart       # Entry point
-```
-
----
 
 ## 🧠 MVVM Architecture
 
