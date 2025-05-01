@@ -72,6 +72,23 @@ This clean separation improves scalability and maintainability.
 
 ---
 
+## 🔗 Download APK
+
+You can find the latest release APK of the project here:
+
+📂 **[outputs/mealio.apk](outputs/mealio.apk)**
+
+To install:
+1. Download the APK file from the above path.
+2. Transfer it to your Android device.
+3. Open the file and follow the installation instructions.
+4. Ensure you have allowed installations from unknown sources on your device settings.
+
+> This APK was built in release mode and is ready for testing or distribution.
+
+
+---
+
 ## 🐞 Known Issues and Fixes
 
 ### 1. 🔲 Black Screen on Release APK
