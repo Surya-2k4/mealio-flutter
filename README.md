@@ -76,7 +76,7 @@ This clean separation improves scalability and maintainability.
 
 You can find the latest release APK of the project here:
 
-📂 **[outputs/mealio.apk](outputs/mealio.apk)**
+📂 **[output/mealio.apk](output/mealio.apk)**
 
 To install:
 1. Download the APK file from the above path.
