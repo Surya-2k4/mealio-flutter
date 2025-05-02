@@ -2,6 +2,9 @@
 
 Mealio is a Flutter-based recipe management application built using the MVVM architecture. It features user authentication, category-wise meal organization, and Firestore integration for storing meal data and images.
 
+📁 **Output Resources:** The `output` directory contains the working demo video, APK file, and UI screenshots.  
+🚀 Access [output](./output) for the final build, demo, and visual walkthrough of the application.
+
 ---
 
 ## 🚀 Features
