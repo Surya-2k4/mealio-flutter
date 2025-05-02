@@ -13,20 +13,47 @@ Mealio is a Flutter-based recipe management application built using the MVVM arc
 - MVVM Architecture using Provider
 - Responsive UI for Web and Mobile
 
+---
 
+## 🧠 MVVM Architecture in This Project
 
-## 🧠 MVVM Architecture
+This project follows the **MVVM (Model-View-ViewModel)** architectural pattern to maintain clean separation of concerns and better scalability. Here's how each component is implemented:
 
-This project follows the MVVM (Model-View-ViewModel) pattern:
+### 🧩 Model
+The **Model** represents the app's data layer. In this project, Firebase Cloud Firestore acts as the data source, with collections such as:
+- `food-list` – Stores available food items.
+- `orders` – Stores user-specific orders.
+- `cart` – Temporarily holds items the user adds to their cart.
 
-- **Model:** Represents the data (e.g., Meal, Category)
-- **View:** UI built using Flutter widgets
-- **ViewModel:** Handles business logic, state management using `Provider`
-- **Service Layer:** Handles Firebase interactions (auth, Firestore, storage)
+Each collection acts as a source of truth, and documents within them represent individual data entities.
 
-This clean separation improves scalability and maintainability.
+### 🖼️ View
+The **View** is composed of Flutter widgets that define the UI. These include screens such as:
+- `CartScreen` – Displays items added to the cart.
+- `MyOrdersScreen` – Shows the logged-in user's past orders.
+- `HomeScreen` – Displays food items and navigation options.
+
+The View is responsible solely for rendering UI elements and responding to user interactions.
+
+### 🧮 ViewModel
+The **ViewModel** contains the business logic and state management. It serves as a bridge between the Model and the View. For example:
+- `CartViewModel` handles cart operations like adding/removing items, computing the total amount, and syncing with Firestore.
+- ViewModels ensure that the UI gets updated reactively when the data changes, without directly modifying the View from the Model.
+
+Using this separation:
+- The UI remains simple and declarative.
+- Logic and data handling are encapsulated and testable.
+- Firestore queries and updates are centralized in the ViewModel layer, keeping code modular and easier to maintain.
+
+### ✅ Benefits
+- Easier testing and debugging.
+- Separation of UI and business logic.
+- Reactive and scalable architecture, ideal for Firebase-based applications.
+
+This approach improves readability and maintainability, especially as the project grows.
 
 ---
+
 
 ## 🛠️ Project Setup Instructions
 
@@ -108,68 +135,6 @@ To install:
 
 ---
 
-## 📂 Git Workflow Issue Fix
-
-If you see this error:
-```
-! [rejected] main -> main (fetch first)
-error: failed to push some refs
-```
-
-Use:
-```bash
-git pull origin main --allow-unrelated-histories
-git push origin main
-```
-
----
-
-## ✅ Done!
-
-You're all set to explore and enhance the Mealio app!
-
-
----
-
-## 🛠️ Issues Faced & Solutions
-
-### 1. 🏗️ Build Issue: APK shows black screen on install
-
-**Problem:**
-- Release build APK installed successfully but only showed a black screen.
-
-**Solution:**
-Ensure:
-- Firebase is initialized before `runApp()`:
-  ```dart
-  void main() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
-    runApp(MyApp());
-  }
-  ```
-- Internet permission is included in `AndroidManifest.xml`:
-  ```xml
-  <uses-permission android:name="android.permission.INTERNET"/>
-  ```
-
-- Any `FutureBuilder` or async widget in `main.dart` handles null/error states correctly.
-
----
-
-### 2. 🖼️ Image Not Displayed on Mobile
-
-**Problem:**
-- Images rendered fine on Web but not on Mobile.
-
-**Solution:**
-- Firestore was storing image URLs in `data:image/...` format (copied directly from Google search).
-- Firebase Storage image URLs should **start with `https://`**.
-- Copy image links correctly and verify by opening in browser.
-- Recommended to upload to Firebase Storage and use downloadable URLs.
-
----
-
 ### 3. 🔒 Firebase Permission Denied
 
 **Problem:**
@@ -178,33 +143,37 @@ Ensure:
 **Solution:**
 - Configure Firestore rules correctly:
   ```js
-  service cloud.firestore {
-    match /databases/{database}/documents {
-      match /{document=**} {
-        allow read, write: if request.auth != null;
-      }
+  rules_version = '2';
+   service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;  
     }
   }
+   }
   ```
-
 ---
 
-### 4. 📦 Git Push Error: "Updates were rejected"
+## 4. **Authentication Issues** 🔒
+   - Initially, I created the project for Android and tried running it on Chrome. 🌐
+   - Later, I added a web app to the project in the Firebase console and included the corresponding API keys inside the `main.dart` file. This approach worked well because I checked the running platform (whether Web or Android) and initialized Firebase accordingly. ✔️
+   - However, I forgot to enable Firebase Authentication in the Firebase console, which caused issues with authentication functionality. 🚫
 
-**Problem:**
-- When pushing to GitHub:
-  ```bash
-  error: failed to push some refs to 'https://github.com/Surya-2k4/mealio-flutter'
-  hint: Updates were rejected because the remote contains work that you do not
-  hint: have locally.
-  ```
+## 5. **Cloud Firestore Issues** 📂
+   - I created a Firestore collection called `food-list` for storing food items. 🍔
+   - Initially, I manually inserted a single document into the collection and tried to retrieve it. However, the first attempt resulted in a "Permission Denied" error. ❌
+   - To fix this, I updated the Firestore security rules to allow both read and write operations if the condition is set to true. This resolved the issue. 🔑
 
-**Solution:**
-- Pull changes before pushing:
-  ```bash
-  git pull origin main --rebase
-  git push origin main
-  ```
+## 6. **Orders Screen Issues** 🛒
+   - Initially, the orders screen was displaying all food items ordered by every registered user, which was not the expected behavior. Every user could see all the orders, which was incorrect. 😕
+   - To resolve this, I modified the `orders` collection schema. I ensured that the `userId` of the logged-in user is stored whenever an order is placed. This way, the food details and the corresponding `userId` are stored together in the `orders` collection. 📝
+   - Then, I retrieved the orders by matching the currently logged-in user's `userId` with the `userId` stored in the `orders` collection. This solution worked perfectly and ensured that only the specific user's orders were displayed. ✅
+
+## 7. **Navigation Issues** 🔄
+   - There was an issue where the back arrow navigation button appeared incorrectly on the home screen when returning from the cart screen. 🔙
+   - Initially, I was using `Navigator.pushReplacementNamed`, but this caused the back button to show up incorrectly on the home screen. ⚠️
+   - To resolve this, I replaced `Navigator.pushReplacementNamed` with `Navigator.pop(context)` to ensure that the correct navigation behavior was followed. This solved the issue and removed the unwanted back arrow button. 🎉
+
 
 ---
 
@@ -216,6 +185,6 @@ Ensure:
 
 ---
 
-## 🔗 Author
+## 🔗 Contact
 
-Created by [Surya-2k4](https://github.com/Surya-2k4)
+Gmail : [suryanatarajan04@gmail.com](suryanatarajan04@gmail.com)
